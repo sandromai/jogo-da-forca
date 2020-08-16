@@ -1,18 +1,9 @@
-/*
-Desenvolva o famoso jogo da forca, onde o sistema deverá permitir o cadastro da palavra a ser 
-adivinhada. Deverá ainda contar as tentativas de erros e acertos criando um ranking dos melhores.
-O sistema deverá conter um menu interativo para começar um novo jogo, consultar os rankings e 
-fornecer ajuda ao usuário caso necessário. Usar funções, ponteiros e escrita/leitura em
-arquivos.
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
-
 
 void OS();
 void display(int displayType);
@@ -23,6 +14,7 @@ void storeRank(char *player, int *err, int wordSize);
 void orderRank();
 void showRank();
 void help();
+void clearTerminal();
 
 int os;
 char word[100];
@@ -59,7 +51,8 @@ void OS()
     else if (os == 2)
     {
         system("clear");
-    } else
+    }
+    else
     {
         printf("\nERRO NO OS\n");
         sleep(2);
@@ -76,7 +69,7 @@ void display(int displayType)
         printf("*    Bem-vindo ao Jogo da Forca    *\n");
         printf("************************************\n");
         break;
-    
+
     case 2:
         printf("************************************\n");
         printf("*        Menu de Utilização        *\n");
@@ -271,15 +264,9 @@ void option()
 
     getchar();
 
-    if (os == 1)
-    {
-        sleep(1);
-        system("cls");
-    } else if (os == 2)
-    {
-        sleep(1);
-        system("clear");
-    }
+    sleep(1);
+
+    clearTerminal();
 
     switch (option)
     {
@@ -299,29 +286,16 @@ void option()
         display(15);
         sleep(2);
 
-        if (os == 1)
-        {
-            system("cls");
-        } else if (os == 2)
-        {
-            system("clear");
-        }
+        clearTerminal();
 
         exit(0);
         break;
-    
+
     default:
         printf("\nOpção Inexistente!\n");
 
-        if (os == 1)
-        {
-            sleep(1);
-            system("cls");
-        } else if (os == 2)
-        {
-            sleep(1);
-            system("clear");
-        }
+        sleep(1);
+        clearTerminal();
 
         break;
     }
@@ -337,15 +311,7 @@ void newGame()
     strtok(player, "\n");
 
     sleep(1);
-
-    if (os == 1)
-    {
-        system("cls");
-    }
-    else if (os == 2)
-    {
-        system("clear");
-    }
+    clearTerminal();
 
     registerWord();
 
@@ -366,7 +332,7 @@ void newGame()
         }
 
         printf("\n");
-        
+
         printf("\nInsira uma letra: ");
         scanf("%c", &letter);
 
@@ -389,7 +355,7 @@ void newGame()
             printf("\nLETRA INCORRETA\n");
 
             if (err == 7)
-            {                
+            {
                 end = 1;
 
                 if (os == 1)
@@ -414,7 +380,8 @@ void newGame()
                 printf("Pressione \"enter\" para continuar\n");
                 getchar();
             }
-        } else
+        }
+        else
         {
             correctAux += correct;
             correct = 0;
@@ -425,14 +392,7 @@ void newGame()
             {
                 end = 1;
 
-                if (os == 1)
-                {
-                    system("cls");
-                }
-                else if (os == 2)
-                {
-                    system("clear");
-                }
+                clearTerminal();
 
                 display(err + 6);
 
@@ -450,15 +410,7 @@ void newGame()
         }
 
         sleep(1);
-
-        if (os == 1)
-        {
-            system("cls");
-        }
-        else if (os == 2)
-        {
-            system("clear");
-        }
+        clearTerminal();
     }
 }
 
@@ -481,15 +433,7 @@ void registerWord()
 
     display(5);
     sleep(1);
-
-    if (os == 1)
-    {
-        system("cls");
-    }
-    else if (os == 2)
-    {
-        system("clear");
-    }
+    clearTerminal();
 }
 
 void storeRank(char *player, int *err, int wordSize)
@@ -504,14 +448,14 @@ void storeRank(char *player, int *err, int wordSize)
         printf("\nERRO NA ATUALIZAÇÃO DO RANK\n");
         sleep(2);
         exit(1);
-
-    } else
+    }
+    else
     {
         fprintf(rank, "%s\n", player);
         fprintf(rank, "%d\n", *err);
         fprintf(rank, "%d\n", wordSize);
 
-        fclose(rank);  
+        fclose(rank);
     }
 
     orderRank();
@@ -527,10 +471,11 @@ void showRank()
 
     rank = fopen("rank.txt", "r");
 
-    if(rank == NULL)
+    if (rank == NULL)
     {
         printf("\nNão Foi Possível Encontrar o Ranking\n\n");
-    } else
+    }
+    else
     {
         printf("\nPOSIÇÃO  -  JOGADOR  -  ERROS  -  TAMANHO DA PALAVRA\n\n");
 
@@ -583,14 +528,7 @@ void showRank()
     printf("Pressione \"enter\" para continuar\n");
     getchar();
 
-    if (os == 1)
-    {
-        system("cls");
-    }
-    else if (os == 2)
-    {
-        system("clear");
-    }
+    clearTerminal();
 }
 
 void orderRank()
@@ -607,7 +545,8 @@ void orderRank()
         printf("\nERRO AO MODIFICAR O RANK\n");
         sleep(2);
         exit(1);
-    } else
+    }
+    else
     {
         rewind(rank);
 
@@ -634,9 +573,9 @@ void orderRank()
             fgets(line, 100, rank);
         }
 
-        for (i = 0 ; i < (lineCount / 3) - 1; i++)
+        for (i = 0; i < (lineCount / 3) - 1; i++)
         {
-            for (j = 0 ; j < (lineCount / 3) - i - 1; j++)
+            for (j = 0; j < (lineCount / 3) - i - 1; j++)
             {
                 if (errors[j] > errors[j + 1])
                 {
@@ -675,19 +614,19 @@ void orderRank()
                 i++;
 
                 rewind(rank);
-            } else
+            }
+            else
             {
                 fgets(line, 100, rank);
             }
         }
-        
+
         fclose(temp);
         fclose(rank);
 
         remove("rank.txt");
         rename("temp.txt", "rank.txt");
     }
-
 }
 
 void help()
@@ -696,11 +635,17 @@ void help()
 
     printf("\nPressione \"enter\" para continuar\n");
     getchar();
-    
+
+    clearTerminal();
+}
+
+void clearTerminal()
+{
     if (os == 1)
     {
         system("cls");
-    } else if (os == 2)
+    }
+    else if (os == 2)
     {
         system("clear");
     }
