@@ -358,14 +358,7 @@ void newGame()
             {
                 end = 1;
 
-                if (os == 1)
-                {
-                    system("cls");
-                }
-                else if (os == 2)
-                {
-                    system("clear");
-                }
+                clearTerminal();
 
                 display(12);
 
