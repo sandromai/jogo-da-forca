@@ -303,7 +303,7 @@ void option()
 
 void newGame()
 {
-    int i, correct = 0, err = 0, end = 0, correctAux = 0;
+    int i, correct = 0, err = 0, end = 0, correctAux = 0, alreadyFound = 0;
     char letter, player[100], secretWord[100], secretWordAux[2];
 
     printf("\nInsira o Nome do Jogador: ");
@@ -344,15 +344,28 @@ void newGame()
             {
                 secretWord[i] = toupper(letter);
 
+                word[i] = tolower(word[i]);
+
                 correct++;
+            } else if (tolower(letter) == word[i])
+            {
+                alreadyFound++;
             }
         }
 
         if (correct == 0)
         {
-            err++;
+            if (alreadyFound == 0)
+            {
+                err++;
 
-            printf("\nLETRA INCORRETA\n");
+                printf("\nLETRA INCORRETA\n");
+            } else
+            {
+                printf("\nLETRA JÁ ENCONTRADA\n");
+
+                alreadyFound = 0;
+            }
 
             if (err == 7)
             {
@@ -365,6 +378,11 @@ void newGame()
                 printf("\n");
 
                 display(13);
+
+                for (i = 0; i < strlen(word); i++)
+                {
+                    word[i] = toupper(word[i]);
+                }
 
                 printf("\nA Palavra era: %s\n", word);
 
@@ -393,6 +411,11 @@ void newGame()
 
                 display(14);
 
+                for (i = 0; i < strlen(word); i++)
+                {
+                    word[i] = toupper(word[i]);
+                }
+                
                 printf("\nA Palavra era: %s\n", word);
 
                 storeRank(player, &err, strlen(word));
